@@ -1,0 +1,7 @@
+# Ignore video assets to avoid hitting GitHub size limits
+videos/
+*.mp4
+
+# System generated logs or tasks
+.system_generated/
+*.log
