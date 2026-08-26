@@ -1552,24 +1552,12 @@
       isBlooming = false;
       bloomingSpeedMult = 1.0;
       
-      // Reset progress & state variables
-      currentSceneIndex = 0;
-      activePlayer.src = scenes[0].path;
-      activePlayer.load();
-      activePlayer.oncanplay = () => {
-        activePlayer.oncanplay = null;
-        activePlayer.currentTime = 0;
-        activePlayer.play().then(() => {
-          isPlaying = true;
-          updatePlayButtonUI();
-        });
-      };
+      // Reset particle blooming parameters
+      isBlooming = false;
+      bloomingSpeedMult = 1.0;
       
-      // Update UI components
-      updateChapterPills(1);
-      document.getElementById('chapterTitleDisplay').innerText = scenes[0].chapterTitle;
-      updateLoveNoteCard(0);
-      updateTimelineFills();
+      // Leverage switchScene(0) to perform smooth preloading and transition
+      switchScene(0);
     }
 
     // Connect Outro Card Action Listeners
