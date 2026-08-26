@@ -115,8 +115,14 @@
 
     /* Letterbox spacing shadow */
     .cinematic-aspect {
-      box-shadow: inset 0 80px 120px -60px rgba(0, 0, 0, 0.95), 
-                  inset 0 -80px 120px -60px rgba(0, 0, 0, 0.95);
+      box-shadow: inset 0 45px 65px -30px rgba(0, 0, 0, 0.95), 
+                  inset 0 -45px 65px -30px rgba(0, 0, 0, 0.95);
+    }
+    @media (min-width: 768px) {
+      .cinematic-aspect {
+        box-shadow: inset 0 80px 120px -60px rgba(0, 0, 0, 0.95), 
+                    inset 0 -80px 120px -60px rgba(0, 0, 0, 0.95);
+      }
     }
     
     /* Override for Tailwind active outline */
@@ -173,9 +179,9 @@
   <!-- Seamless Dual-Video Background Players -->
   <div class="absolute inset-0 z-0 overflow-hidden bg-obsidian">
     <!-- Active player layer -->
-    <video id="playerA" class="absolute inset-0 w-full h-full object-cover video-transition opacity-100 z-10" muted playsinline></video>
+    <video id="playerA" class="absolute inset-0 w-full h-full object-cover video-transition opacity-100 z-10" muted playsinline webkit-playsinline></video>
     <!-- Inactive player layer (for preloading and fading) -->
-    <video id="playerB" class="absolute inset-0 w-full h-full object-cover video-transition opacity-0 z-0" muted playsinline></video>
+    <video id="playerB" class="absolute inset-0 w-full h-full object-cover video-transition opacity-0 z-0" muted playsinline webkit-playsinline></video>
   </div>
 
   <!-- Interactive Antigravity Physics Canvas Overlay -->
@@ -233,7 +239,7 @@
           </span>
         </div>
         
-        <p id="cardQuoteText" class="font-serif font-light text-lg md:text-xl text-[#ffe5df] italic leading-relaxed tracking-wide select-text">
+        <p id="cardQuoteText" class="font-serif font-light text-base sm:text-lg md:text-xl text-[#ffe5df] italic leading-relaxed tracking-wide select-text">
           "In the quiet of the morning, love awakens like a single drop of dew on a sleeping petal."
         </p>
         
@@ -242,7 +248,7 @@
         <div class="flex items-center justify-between gap-4">
           <div class="flex items-center gap-1.5 text-[9px] text-white/30 italic">
             <i data-lucide="sparkles" class="w-3 h-3 text-rosegold/40"></i>
-            <span>Stir canvas particles with your cursor</span>
+            <span>Interact with screen to stir particles</span>
           </div>
           
           <button id="collectNoteBtn" class="flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-bold tracking-widest uppercase text-obsidian bg-rosegold hover:bg-rosegold-light active:bg-rosegold-dark shadow-lg shadow-rosegold/10 transition-all duration-300 transform active:scale-95 group cursor-pointer">
@@ -259,7 +265,7 @@
       
       <!-- Interactive Multi-segment Scrubber Timeline -->
       <div class="flex flex-col gap-1 w-full group/timeline">
-        <div id="timelineContainer" class="flex items-center gap-1 w-full h-3 cursor-pointer py-1 relative">
+        <div id="timelineContainer" class="flex items-center gap-1 w-full h-5 cursor-pointer py-2 relative">
           <!-- Dynamically generated segments inside Javascript -->
         </div>
         <div class="flex items-center justify-between text-[8px] md:text-[9px] tracking-widest text-white/30 uppercase px-0.5 font-mono">
@@ -272,10 +278,10 @@
       </div>
 
       <!-- Actions Control Panel -->
-      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 w-full">
         
         <!-- Playback Navigation Group -->
-        <div class="flex items-center gap-5">
+        <div class="flex items-center justify-between w-full sm:justify-start sm:w-auto gap-4 sm:gap-5">
           <!-- Previous Scene -->
           <button id="prevBtn" class="p-2 text-white/60 hover:text-rosegold-light hover:scale-110 active:scale-95 transition-all duration-300 cursor-pointer" title="Previous Scene">
             <i data-lucide="skip-back" class="w-4.5 h-4.5"></i>
@@ -317,7 +323,7 @@
         <div class="flex items-center gap-3">
           <div class="flex items-center gap-2 bg-white/5 border border-white/5 px-4 py-2 rounded-full text-[10px] tracking-wider text-white/70 uppercase font-semibold">
             <i data-lucide="sparkles" class="w-3.5 h-3.5 text-rosegold"></i>
-            <span>Physics Mode:</span>
+            <span class="hidden sm:inline">Physics Mode:</span>
             <button id="gravityToggleBtn" class="font-bold text-rosegold hover:text-rosegold-light transition-all duration-300 cursor-pointer ml-1">
               Standard Float
             </button>
@@ -329,7 +335,7 @@
   </div>
 
   <!-- Keepsake Journal Drawer Slide-out Panel -->
-  <div id="keepsakeDrawer" class="fixed inset-y-0 right-0 w-80 md:w-96 bg-obsidian/95 backdrop-blur-2xl border-l border-white/10 z-50 transform translate-x-full transition-transform duration-500 ease-in-out shadow-2xl flex flex-col pointer-events-auto">
+  <div id="keepsakeDrawer" class="fixed inset-y-0 right-0 w-full sm:w-96 bg-obsidian/95 backdrop-blur-2xl border-l border-white/10 z-50 transform translate-x-full transition-transform duration-500 ease-in-out shadow-2xl flex flex-col pointer-events-auto">
     <!-- Drawer Header -->
     <div class="flex items-center justify-between p-6 border-b border-white/5">
       <div class="flex items-center gap-2">
@@ -924,6 +930,14 @@
     });
 
     // Touch device support
+    window.addEventListener('touchstart', (e) => {
+      if (e.touches.length > 0) {
+        mouse.x = e.touches[0].clientX;
+        mouse.y = e.touches[0].clientY;
+        mouse.active = true;
+      }
+    }, { passive: true });
+
     window.addEventListener('touchmove', (e) => {
       if (e.touches.length > 0) {
         mouse.x = e.touches[0].clientX;
